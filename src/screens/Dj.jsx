@@ -36,7 +36,7 @@ export const Dj = () => {
       }, 4000);
     };
     getMusics();
-  }, []);
+  });
 
   return (
     <div className="bg-image-dj relative flex flex-col text-white">
