@@ -4,6 +4,9 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { motion } from "framer-motion";
 import "../../src/App.scss";
 
+// exporting unit test-id for Jest Testing Library
+export const FORM_TEST_ID = "FORM_TEST_ID";
+
 export const Audience = () => {
   // state declarations
   const [requestData, setRequestData] = useState("");
@@ -43,7 +46,10 @@ export const Audience = () => {
   return (
     <div className="bg-image relative flex flex-col justify-center items-center text-white">
       <div className="backdrop-blur-[8px] w-full sm:w-full sm:h-full h-full absolute"></div>
-      <div className="absolute w-full flex flex-col gap-4 items-center justify-center py-4 md:py-10 lg:py-40 px-4 md:px-10 lg:px-40">
+      <div
+        data-testid={FORM_TEST_ID}
+        className="absolute w-full flex flex-col gap-4 items-center justify-center py-4 md:py-10 lg:py-40 px-4 md:px-10 lg:px-40"
+      >
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}

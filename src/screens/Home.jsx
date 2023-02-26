@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import "../../src/App.scss";
 
+// exporting unit test-id for Jest Testing Library
 export const LOGO_TEST_ID = "LOGO_TEST_ID";
 export const WELCOME_TEST_ID = "WELCOME_TEST_ID";
 export const BUTTON_TEST_ID = "BUTTON_TEST_ID";

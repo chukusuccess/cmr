@@ -4,6 +4,9 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { motion } from "framer-motion";
 import "../../src/App.scss";
 
+// exporting unit test-id for Jest Testing Library
+export const LIST_TEST_ID = "LIST_TEST_ID";
+
 export const Dj = () => {
   // state declarations
   const [musics, setMusics] = useState([]);
@@ -75,7 +78,10 @@ export const Dj = () => {
   return (
     <div className="bg-image-dj relative flex flex-col text-white">
       <div className="backdrop-blur-[8px] w-full sm:w-full sm:h-full h-full absolute"></div>
-      <div className="absolute flex flex-col h-full items-start justify-start py-8 md:py-20 lg:py-40 px-4 md:px-10 lg:px-40">
+      <div
+        data-testid={LIST_TEST_ID}
+        className="absolute flex flex-col h-full items-start justify-start py-8 md:py-20 lg:py-40 px-4 md:px-16 lg:px-40"
+      >
         <h1>The most recent request you recieve will be listed at the top.</h1>
         <br />
         <div
@@ -111,6 +117,7 @@ export const Dj = () => {
                   </ul>
                 </div>
               )}
+              {/* TODO: Implement Time Display */}
               {/* <span>
                 Requested at:{" "}
                 <i>
@@ -123,7 +130,7 @@ export const Dj = () => {
           ))}
         </div>
       </div>
-      <div className="absolute bottom-0 pr-8 md:pr-16 lg:pr-40 pb-16 md:pb-24 lg:pb-10 w-full flex flex-row items-start justify-end">
+      <div className="absolute bottom-0 pr-12 md:pr-20 lg:pr-40 pb-16 md:pb-24 lg:pb-10 w-full flex flex-row items-start justify-end lg:justify-start sm:pl-8 sm:md:pl-16 sm:lg:pl-40">
         <button
           className="w-16 h-16 flex flex-col items-center justify-center rounded-[50%] text-black font-bold text-2xl bg-gray-300 shadow-lg animate-[bounce_1.5s_infinite_100ms] cursor-pointer"
           onClick={() => handleClick()}
