@@ -13,7 +13,7 @@ export const Dj = () => {
   const [motionState, setMotionState] = useState(100);
   const [hidden, setHidden] = useState(true);
   const [djModal, setDjModal] = useState(false);
-  const [musicId, setMusicId] = useState([]);
+  const [musicId, setMusicId] = useState();
 
   // specifying db reference
   const collectionRef = collection(db, "musics");
@@ -65,14 +65,9 @@ export const Dj = () => {
   });
 
   // handle modal on music list
-  const handleModalClick = (id) => {
-    musicId?.map((item) => {
-      if (item === id) {
-        setDjModal(!djModal);
-      }
-      return item;
-    });
-  };
+  const handleModalClick = () => {
+    setDjModal(!djModal);
+  }; // TODO: implement better
 
   // component
   return (
@@ -82,7 +77,9 @@ export const Dj = () => {
         data-testid={LIST_TEST_ID}
         className="absolute flex flex-col h-full items-start justify-start py-8 md:py-20 lg:py-40 px-4 md:px-16 lg:px-40"
       >
-        <h1>The most recent request you recieve will be listed at the top.</h1>
+        <h1>
+          The most recent music request you recieve will be listed at the top.{" "}
+        </h1>
         <br />
         <div
           id="#list"
@@ -99,19 +96,20 @@ export const Dj = () => {
                 <span className="text-black">🎧 </span>
                 {music}
               </h1>
-              <button
-                onClick={() => handleModalClick(id)}
-                className="font-bold"
-              >
+              <button onClick={() => handleModalClick()} className="font-bold">
                 ⋮
               </button>
               {djModal && (
-                <div className="absolute right-10 p-2 rounded-sm flex flex-col gap-2 bg-gray-400">
+                <div
+                  className={`${
+                    musicId === id ? "flex" : "hidden"
+                  } absolute right-10 flex flex-row gap-2`}
+                >
                   <ul>
-                    <li className="border-b-gray-500 font-thin text-xs">
+                    <li className="border-b-gray-500 bg-gray-400 p-2 rounded-sm font-thin text-xs">
                       Unavailable
                     </li>
-                    <li className="border-b-gray-500 font-thin text-xs">
+                    <li className="border-b-gray-500 bg-gray-400 p-2 rounded-sm font-thin text-xs">
                       Already played
                     </li>
                   </ul>

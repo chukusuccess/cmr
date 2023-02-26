@@ -12,6 +12,7 @@ export const Audience = () => {
   const [requestData, setRequestData] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [requestButton, setRequestButton] = useState(true);
 
   // specifying db reference
   const collectionRef = collection(db, "musics");
@@ -41,6 +42,28 @@ export const Audience = () => {
       console.log(err, "there was an error submitting request");
     }
   };
+
+  // storing timestamp in localstorage when a user makes a submission
+  if (submitted === true) {
+    let object = { deviceIp: "deviceIp", timestamp: new Date().getTime() };
+    localStorage.setItem("CMRTIMELIMITKEEPER", JSON.stringify(object));
+  }
+
+  // parse the object, get the timestamp.
+  const object = JSON.parse(localStorage.getItem("CMRTIMELIMITKEEPER")),
+    dateString = object?.timestamp,
+    now = new Date().getTime().toString();
+  console.log(dateString, "the datestring", now, "now");
+
+  // compare the localstorage timestamp with the current timestamp to know if 5mins have passed
+  const compareTime = (dateString, now) => {
+    if (new Date(now).getMinutes() - new Date(dateString).getMinutes() === 2) {
+      setRequestButton(!requestButton);
+    }
+  };
+
+  // call the compare function
+  compareTime(dateString, now); //TODO: implement better
 
   // component
   return (
