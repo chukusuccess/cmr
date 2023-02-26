@@ -5,24 +5,26 @@ import { motion } from "framer-motion";
 import "../../src/App.scss";
 
 export const Dj = () => {
+  // state declarations
   const [musics, setMusics] = useState([]);
   const [motionState, setMotionState] = useState(100);
   const [hidden, setHidden] = useState(true);
   const [djModal, setDjModal] = useState(false);
+  const [musicId, setMusicId] = useState([]);
 
-  const handleModalClick = () => {
-    setDjModal(!djModal);
-  };
-
+  // specifying db reference
   const collectionRef = collection(db, "musics");
 
+  // scroll-to-top button function
   const handleClick = () => {
     document
       .getElementById("#list")
       .scrollTo({ top: 0, left: 0, behavior: "smooth" });
   };
 
+  // fetching real-time music requests from db
   useEffect(() => {
+    // getter function block begins here
     const getMusics = async () => {
       const queryLoad = query(collectionRef, orderBy("timestamp"));
       onSnapshot(queryLoad, (snapshot) => {
@@ -30,19 +32,40 @@ export const Dj = () => {
           ...doc.data(),
           id: doc.id,
         }));
+
+        // saving music id to state for easy tracking
+        setMusicId(snapshot.docs.map((doc) => doc.id));
+
+        //display most recent request on top of the list
         const sortedMusicData = musicData.sort(
           (a, b) => b.timestamp.valueOf() - a.timestamp.valueOf()
         );
         setMusics(sortedMusicData);
       });
+
+      // timer for css effect
       setTimeout(() => {
         setHidden(false);
         setMotionState(0);
       }, 4000);
     };
+    // getter function block ends here
+
+    // call getter function
     getMusics();
   });
 
+  // handle modal on music list
+  const handleModalClick = (id) => {
+    musicId?.map((item) => {
+      if (item === id) {
+        setDjModal(!djModal);
+      }
+      return item;
+    });
+  };
+
+  // component
   return (
     <div className="bg-image-dj relative flex flex-col text-white">
       <div className="backdrop-blur-[8px] w-full sm:w-full sm:h-full h-full absolute"></div>
@@ -53,7 +76,7 @@ export const Dj = () => {
           id="#list"
           className="flex flex-col h-full overflow-y-scroll scrollbar w-full"
         >
-          {musics.map(({ music, id, timestamp, index }) => (
+          {musics.map(({ music, id, timestamp }) => (
             <motion.div
               animate={{ x: motionState }}
               hidden={hidden}
@@ -64,7 +87,10 @@ export const Dj = () => {
                 <span className="text-black">🎧 </span>
                 {music}
               </h1>
-              <button onClick={() => handleModalClick()} className="font-bold">
+              <button
+                onClick={() => handleModalClick(id)}
+                className="font-bold"
+              >
                 ⋮
               </button>
               {djModal && (
