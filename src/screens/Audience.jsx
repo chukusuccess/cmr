@@ -5,13 +5,17 @@ import { motion } from "framer-motion";
 import "../../src/App.scss";
 
 export const Audience = () => {
+  // state declarations
   const [requestData, setRequestData] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // specifying db reference
   const collectionRef = collection(db, "musics");
 
+  // submitting music requests to db
   const handleSubmit = async (e) => {
+    // preventing page reload on submit
     e.preventDefault();
     setLoading(true);
     try {
@@ -23,14 +27,19 @@ export const Audience = () => {
       setRequestData("");
       setSubmitted(true);
       setLoading(false);
+
+      // css effect timer
       setTimeout(() => {
         setSubmitted(false);
       }, 4000);
+
+      // catching error if any
     } catch (err) {
       console.log(err, "there was an error submitting request");
     }
   };
 
+  // component
   return (
     <div className="bg-image relative flex flex-col justify-center items-center text-white">
       <div className="backdrop-blur-[8px] w-full sm:w-full sm:h-full h-full absolute"></div>

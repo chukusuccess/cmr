@@ -3,13 +3,20 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import "../../src/App.scss";
 
+export const LOGO_TEST_ID = "LOGO_TEST_ID";
+export const WELCOME_TEST_ID = "WELCOME_TEST_ID";
+export const BUTTON_TEST_ID = "BUTTON_TEST_ID";
+
 export const Home = () => {
+  // declare navigation hook
   const navigate = useNavigate();
+
+  // navigation function
   const goToPage = (route) => {
     navigate({ pathname: route });
-    // toggleNav();
   };
 
+  // component
   return (
     <div className="bg-image relative flex flex-col justify-center items-center text-white">
       <div className="backdrop-blur-[8px] w-full sm:w-full sm:h-full h-full absolute"></div>
@@ -23,7 +30,10 @@ export const Home = () => {
             damping: 20,
           }}
         >
-          <div className="w-24 h-24 rounded-[50%] bg-gray-300 text-black font-bold flex flex-row items-center justify-center">
+          <div
+            data-testid={LOGO_TEST_ID}
+            className="w-24 h-24 rounded-[50%] bg-gray-300 text-black font-bold flex flex-row items-center justify-center"
+          >
             <div className="w-[85%] h-[85%] bg-black rounded-[50%] flex flex-row items-center justify-center">
               <div className="w-[95%] h-[95%] bg-gray-300 rounded-[50%] flex flex-row items-center justify-center">
                 <span className="logo text-2xl">CMR</span>
@@ -36,7 +46,10 @@ export const Home = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-center font-extralight">
+          <h1
+            data-testid={WELCOME_TEST_ID}
+            className="text-center font-extralight"
+          >
             Welcome to CMR! This is a Club Music Request platform, and we're
             excited to provide you with an easy way to request your favorite
             songs to your DJs. Whatever your music taste is, this website allows
@@ -52,7 +65,10 @@ export const Home = () => {
             ✨Please select what you are✨
           </h1>
           <br />
-          <div className="w-full flex flex-row items-center justify-center gap-4">
+          <div
+            data-testid={BUTTON_TEST_ID}
+            className="w-full flex flex-row items-center justify-center gap-4"
+          >
             <button
               className="bg-[#666666] px-10 py-2 w-[50%] md:w-[30%] lg:w-[30%] hover:bg-[#888888]"
               onClick={() => goToPage("/dj", "Audience")}

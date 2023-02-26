@@ -27,21 +27,27 @@ export const Dj = () => {
     // getter function block begins here
     const getMusics = async () => {
       const queryLoad = query(collectionRef, orderBy("timestamp"));
-      onSnapshot(queryLoad, (snapshot) => {
-        let musicData = snapshot.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
+      try {
+        onSnapshot(queryLoad, (snapshot) => {
+          let musicData = snapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
 
-        // saving music id to state for easy tracking
-        setMusicId(snapshot.docs.map((doc) => doc.id));
+          // saving music id to state for easy tracking
+          setMusicId(snapshot.docs.map((doc) => doc.id));
 
-        //display most recent request on top of the list
-        const sortedMusicData = musicData.sort(
-          (a, b) => b.timestamp.valueOf() - a.timestamp.valueOf()
-        );
-        setMusics(sortedMusicData);
-      });
+          //display most recent request on top of the list
+          const sortedMusicData = musicData.sort(
+            (a, b) => b.timestamp.valueOf() - a.timestamp.valueOf()
+          );
+          setMusics(sortedMusicData);
+        });
+
+        // catching error if any
+      } catch (err) {
+        console.log(err, "there was an error recieving a music request");
+      }
 
       // timer for css effect
       setTimeout(() => {
