@@ -8,6 +8,11 @@ export const Dj = () => {
   const [musics, setMusics] = useState([]);
   const [motionState, setMotionState] = useState(100);
   const [hidden, setHidden] = useState(true);
+  const [djModal, setDjModal] = useState(false);
+
+  const handleModalClick = () => {
+    setDjModal(!djModal);
+  };
 
   const collectionRef = collection(db, "musics");
 
@@ -48,25 +53,47 @@ export const Dj = () => {
           id="#list"
           className="flex flex-col h-full overflow-y-scroll scrollbar w-full"
         >
-          {musics.map(({ music, id, timestamp }) => (
+          {musics.map(({ music, id, timestamp, index }) => (
             <motion.div
               animate={{ x: motionState }}
               hidden={hidden}
               key={id}
-              className="w-full music p-3 mb-2"
+              className="w-full flex flex-row relative items-center justify-between gap-5 music p-3 mb-2"
             >
               <h1>
-                <span className="text-black">🎧</span>
+                <span className="text-black">🎧 </span>
                 {music}
-                {/* <i>{new Date(timestamp.seconds * 1000).toLocaleString()}</i> */}
               </h1>
+              <button onClick={() => handleModalClick()} className="font-bold">
+                ⋮
+              </button>
+              {djModal && (
+                <div className="absolute right-10 p-2 rounded-sm flex flex-col gap-2 bg-gray-400">
+                  <ul>
+                    <li className="border-b-gray-500 font-thin text-xs">
+                      Unavailable
+                    </li>
+                    <li className="border-b-gray-500 font-thin text-xs">
+                      Already played
+                    </li>
+                  </ul>
+                </div>
+              )}
+              {/* <span>
+                Requested at:{" "}
+                <i>
+                  {new Date(timestamp.seconds * 1000).getHours() +
+                    ":" +
+                    new Date(timestamp.seconds * 1000).getMinutes()}
+                </i>
+              </span> */}
             </motion.div>
           ))}
         </div>
       </div>
-      <div className="absolute bottom-0 pl-4 md:pl-10 lg:pl-40 pb-8 md:pb-20 lg:pb-10 w-full flex flex-row items-start justify-start">
+      <div className="absolute bottom-0 pr-8 md:pr-16 lg:pr-40 pb-16 md:pb-24 lg:pb-10 w-full flex flex-row items-start justify-end">
         <button
-          className="w-10 h-10 flex flex-col items-center justify-center rounded-[50%] text-black bg-gray-300 shadow-lg animate-[bounce_1.5s_infinite_100ms] cursor-pointer"
+          className="w-16 h-16 flex flex-col items-center justify-center rounded-[50%] text-black font-bold text-2xl bg-gray-300 shadow-lg animate-[bounce_1.5s_infinite_100ms] cursor-pointer"
           onClick={() => handleClick()}
         >
           ↑
